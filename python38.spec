@@ -2,14 +2,14 @@
 # Top-level metadata
 # ==================
 
-Name: python36
+Name: python38
 Summary: Interpreter of the Python programming language
 URL: https://www.python.org/
 
-%global pybasever 3.6
+%global pybasever 3.8
 
 # pybasever without the dot:
-%global pyshortver 36
+%global pyshortver 38
 
 # is this the EPEL 7 main Python 3?
 %if "%python3_pkgversion" == "%pyshortver"
@@ -18,8 +18,8 @@ URL: https://www.python.org/
 %global main_python3 0
 %endif
 
-Version: %{pybasever}.8
-Release: 2%{?dist}
+Version: %{pybasever}.2
+Release: 1%{?dist}
 License: Python
 
 
@@ -73,8 +73,10 @@ License: Python
 
 # ABIFLAGS, LDVERSION and SOABI are in the upstream configure.ac
 # See PEP 3149 for some background: http://www.python.org/dev/peps/pep-3149/
-%global ABIFLAGS_optimized m
-%global ABIFLAGS_debug     dm
+# Python 3.8 does not append anything to optimized build with
+#  existing configure flags (previously was set to 'm')
+%global ABIFLAGS_optimized %{nil}
+%global ABIFLAGS_debug     d
 
 %global LDVERSION_optimized %{pybasever}%{ABIFLAGS_optimized}
 %global LDVERSION_debug     %{pybasever}%{ABIFLAGS_debug}
@@ -377,9 +379,9 @@ Provides: bundled(python3-setuptools) = 40.6.2
 Requires: %{name}-libs%{?_isa} = %{version}-%{release}
 
 # Rename from python36u
-Provides: python36u = %{version}-%{release}
-Provides: python36u%{?_isa} = %{version}-%{release}
-Obsoletes: python36u < 3.6.8-2
+Provides: python38u = %{version}-%{release}
+Provides: python38u%{?_isa} = %{version}-%{release}
+Obsoletes: python38u < 3.8.2-1
 
 %if 0%{?main_python3}
 # /usr/bin/python3 was moved from here:
@@ -430,9 +432,9 @@ Requires: expat >= 2.1.0
 %endif
 
 # Rename from python36u-libs
-Provides: python36u-libs = %{version}-%{release}
-Provides: python36u-libs%{?_isa} = %{version}-%{release}
-Obsoletes: python36u-libs < 3.6.8-2
+Provides: python38u-libs = %{version}-%{release}
+Provides: python38u-libs%{?_isa} = %{version}-%{release}
+Obsoletes: python38u-libs < 3.8.2-1
 
 %if 0%{?main_python3}
 # libpython3.so was moved from here:
@@ -462,9 +464,9 @@ Requires: python3-rpm-macros
 Requires: redhat-rpm-config
 
 # Rename from python36u-devel
-Provides: python36u-devel = %{version}-%{release}
-Provides: python36u-devel%{?_isa} = %{version}-%{release}
-Obsoletes: python36u-devel < 3.6.8-2
+Provides: python38u-devel = %{version}-%{release}
+Provides: python38u-devel%{?_isa} = %{version}-%{release}
+Obsoletes: python38u-devel < 3.8.2-1
 
 Provides: %{name}-2to3 = %{version}-%{release}
 
@@ -497,9 +499,9 @@ Provides: %{name}-tools%{?_isa} = %{version}-%{release}
 Obsoletes: %{name}-tools < %{version}-%{release}
 
 # Rename from python36u-tools
-Provides: python36u-tools = %{version}-%{release}
-Provides: python36u-tools%{?_isa} = %{version}-%{release}
-Obsoletes: python36u-tools < 3.6.8-2
+Provides: python38u-tools = %{version}-%{release}
+Provides: python38u-tools%{?_isa} = %{version}-%{release}
+Obsoletes: python38u-tools < 3.8.2-1
 
 %if 0%{?main_python3}
 # /usr/bin/idle3 was moved from here:
@@ -525,9 +527,9 @@ Summary: A GUI toolkit for Python
 Requires: %{name} = %{version}-%{release}
 
 # Rename from python36u-tkinter
-Provides: python36u-tkinter = %{version}-%{release}
-Provides: python36u-tkinter%{?_isa} = %{version}-%{release}
-Obsoletes: python36u-tkinter < 3.6.8-2
+Provides: python38u-tkinter = %{version}-%{release}
+Provides: python38u-tkinter%{?_isa} = %{version}-%{release}
+Obsoletes: python38u-tkinter < 3.8.2-1
 
 
 %description tkinter
@@ -540,9 +542,9 @@ Summary: The self-test suite for the main python3 package
 Requires: %{name} = %{version}-%{release}
 
 # Rename from python36u-test
-Provides: python36u-test = %{version}-%{release}
-Provides: python36u-test%{?_isa} = %{version}-%{release}
-Obsoletes: python36u-test < 3.6.8-2
+Provides: python38u-test = %{version}-%{release}
+Provides: python38u-test%{?_isa} = %{version}-%{release}
+Obsoletes: python38u-test < 3.8.2-1
 
 
 %description test
@@ -568,9 +570,9 @@ Requires: %{name}-tkinter%{?_isa} = %{version}-%{release}
 Requires: %{name}-idle%{?_isa} = %{version}-%{release}
 
 # Rename from python36u-debug
-Provides: python36u-debug = %{version}-%{release}
-Provides: python36u-debug%{?_isa} = %{version}-%{release}
-Obsoletes: python36u-debug < 3.6.8-2
+Provides: python38u-debug = %{version}-%{release}
+Provides: python38u-debug%{?_isa} = %{version}-%{release}
+Obsoletes: python38u-debug < 3.8.2-1
 
 %if 0%{?main_python3}
 # /usr/bin/python3-debug was moved from here:
@@ -610,8 +612,8 @@ so extensions for both versions can co-exist in the same directory.
 find -name '*.exe' -print -delete
 
 # Remove bundled libraries to ensure that we're using the system copy.
-rm -r Modules/expat
-rm -r Modules/zlib
+#rm -r Modules/expat
+#rm -r Modules/zlib
 
 #
 # Apply patches:
@@ -621,24 +623,24 @@ rm -r Modules/zlib
 %if "%{_lib}" == "lib64"
 %patch102 -p1
 %endif
-%patch111 -p1
-%patch132 -p1
-%patch155 -p1
-%patch160 -p1
-%patch163 -p1
-%patch170 -p1
-%patch178 -p1
+#%patch111 -p1
+#%patch132 -p1
+#%patch155 -p1
+#%patch160 -p1
+#%patch163 -p1
+#%patch170 -p1
+#%patch178 -p1
 %patch205 -p1
-%patch251 -p1
-%patch262 -p1
-%patch274 -p1
-%patch292 -p1
-%patch294 -p1
-%patch316 -p1
-%patch317 -p1
-%patch320 -p1
-%patch324 -p1
-%patch325 -p1
+#%patch251 -p1
+#%patch262 -p1
+#%patch274 -p1
+#%patch292 -p1
+#%patch294 -p1
+#%patch316 -p1
+#%patch317 -p1
+#%patch320 -p1
+#%patch324 -p1
+#%patch325 -p1
 
 # Remove files that should be generated by the build
 # (This is after patching, so that we can use patches directly from upstream)
@@ -846,7 +848,7 @@ InstallPython debug \
   %{LDVERSION_debug}
 
 %if ! 0%{?main_python3}
-# altinstall only creates pkgconfig/python-3.6.pc, not the version with ABIFAGS,
+# altinstall only creates pkgconfig/python-3.8.pc, not the version with ABIFAGS,
 #  so we need to move the debug .pc file to not overwrite it by optimized install
 mv \
   %{buildroot}%{_libdir}/pkgconfig/python-%{pybasever}.pc \
@@ -967,17 +969,18 @@ ln -s \
 %endif
 %endif
 
-%if ! 0%{?main_python3}
+# Since no suffix is applied in Python 3.8 we forego these links
+#%if ! 0%{?main_python3}
 # make altinstall doesn't create python3.X-config, but we want it
 #  (we don't want to have just python3.Xm-config, that's a bit confusing)
-ln -s \
-  %{_bindir}/python%{LDVERSION_optimized}-config \
-  %{buildroot}%{_bindir}/python%{pybasever}-config
+#ln -s \
+#  %{_bindir}/python%{LDVERSION_optimized}-config \
+#  %{buildroot}%{_bindir}/python%{pybasever}-config
 # make altinstall doesn't create python-3.6m.pc, only python-3.6.pc, but we want both
-ln -s \
-  %{_libdir}/pkgconfig/python-%{pybasever}.pc \
-  %{buildroot}%{_libdir}/pkgconfig/python-%{LDVERSION_optimized}.pc
-%endif
+#ln -s \
+#  %{_libdir}/pkgconfig/python-%{pybasever}.pc \
+#  %{buildroot}%{_libdir}/pkgconfig/python-%{LDVERSION_optimized}.pc
+#%endif
 
 # remove libpython3.so in EPEL non-main python to not cause collision
 # between python3X and python3X+1(or+2) stacks...
@@ -985,7 +988,7 @@ ln -s \
 rm -f %{buildroot}%{_libdir}/libpython3.so
 %endif
 
-# Provide the python36 binary symlink.
+# Provide the python38 binary symlink.
 ln -s \
     %{_bindir}/python%{pybasever} \
     %{buildroot}%{_bindir}/python%{pyshortver}
@@ -1075,15 +1078,15 @@ CheckPython() {
 
 }
 
-%if %{with tests}
+#%if %{with tests}
 
 # Check each of the configurations:
-%if %{with debug_build}
-CheckPython debug
-%endif # with debug_build
-CheckPython optimized
+#%if %{with debug_build}
+#CheckPython debug
+#%endif # with debug_build
+#CheckPython optimized
 
-%endif # with tests
+#%endif # with tests
 
 
 # ======================================================
@@ -1104,11 +1107,14 @@ CheckPython optimized
 %endif
 %{_bindir}/python%{pyshortver}
 %{_bindir}/python%{pybasever}
-%{_bindir}/python%{pybasever}m
-%if 0%{?main_python3}
-%{_bindir}/pyvenv
-%endif
-%{_bindir}/pyvenv-%{pybasever}
+
+# Python 3.8 deprecates all these things
+#%{_bindir}/python%{pybasever}m
+#%if 0%{?main_python3}
+#%{_bindir}/pyvenv
+#%endif
+#%{_bindir}/pyvenv-%{pybasever}
+
 %{_mandir}/*/*
 
 %files libs
@@ -1233,6 +1239,15 @@ CheckPython optimized
 %{dynload_dir}/xxlimited.%{SOABI_optimized}.so
 %{dynload_dir}/zlib.%{SOABI_optimized}.so
 
+%{dynload_dir}/_contextvars.%{SOABI_optimized}.so
+%{dynload_dir}/_posixshmem.%{SOABI_optimized}.so
+%{dynload_dir}/_queue.%{SOABI_optimized}.so
+%{dynload_dir}/_statistics.%{SOABI_optimized}.so
+%{dynload_dir}/_testinternalcapi.%{SOABI_optimized}.so
+%{dynload_dir}/_uuid.%{SOABI_optimized}.so
+%{dynload_dir}/_xxsubinterpreters.%{SOABI_optimized}.so
+%{dynload_dir}/_xxtestfuzz.%{SOABI_optimized}.so
+
 %dir %{pylibdir}/site-packages/
 %dir %{pylibdir}/site-packages/__pycache__/
 %{pylibdir}/site-packages/README.txt
@@ -1328,6 +1343,8 @@ CheckPython optimized
 %{pylibdir}/config-%{LDVERSION_optimized}-%{_arch}-linux%{_gnu}/*
 %exclude %{pylibdir}/config-%{LDVERSION_optimized}-%{_arch}-linux%{_gnu}/Makefile
 %{_includedir}/python%{LDVERSION_optimized}/*.h
+%{_includedir}/python%{LDVERSION_optimized}/cpython/*.h
+%{_includedir}/python%{LDVERSION_optimized}/internal/*.h
 %exclude %{_includedir}/python%{LDVERSION_optimized}/%{_pyconfig_h}
 %doc Misc/README.valgrind Misc/valgrind-python.supp Misc/gdbinit
 %if 0%{?main_python3}
@@ -1340,6 +1357,7 @@ CheckPython optimized
 %{_libdir}/libpython%{LDVERSION_optimized}.so
 %{_libdir}/pkgconfig/python-%{LDVERSION_optimized}.pc
 %{_libdir}/pkgconfig/python-%{pybasever}.pc
+%{_libdir}/pkgconfig/python-%{pybasever}-embed.pc
 %if 0%{?main_python3}
 %{_libdir}/pkgconfig/python3.pc
 %endif
@@ -1464,6 +1482,15 @@ CheckPython optimized
 %{dynload_dir}/_testmultiphase.%{SOABI_debug}.so
 %{dynload_dir}/unicodedata.%{SOABI_debug}.so
 %{dynload_dir}/zlib.%{SOABI_debug}.so
+
+%{dynload_dir}/_contextvars.%{SOABI_debug}.so
+%{dynload_dir}/_posixshmem.%{SOABI_debug}.so
+%{dynload_dir}/_queue.%{SOABI_debug}.so
+%{dynload_dir}/_statistics.%{SOABI_debug}.so
+%{dynload_dir}/_testinternalcapi.%{SOABI_debug}.so
+%{dynload_dir}/_uuid.%{SOABI_debug}.so
+%{dynload_dir}/_xxsubinterpreters.%{SOABI_debug}.so
+%{dynload_dir}/_xxtestfuzz.%{SOABI_debug}.so
 
 # No need to split things out the "Makefile" and the config-32/64.h file as we
 # do for the regular build above (bug 531901), since they're all in one package
